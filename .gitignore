@@ -1,1 +1,4 @@
-/treejs/
+*~
+.qlot
+app
+logs/*.log

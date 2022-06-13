@@ -9,7 +9,8 @@
 (defsystem "yandex-disk-cleaner"
   :class :package-inferred-system
   :pathname "src"
-  :depends-on ("yandex-disk-cleaner/widgets/analyzer"))
+  :depends-on ("yandex-disk-cleaner/widgets/analyzer"
+	       "yandex-disk-cleaner/server"))
 
 
 (asdf:register-system-packages "colored" '(#:org.shirakumo.alloy.colored))
