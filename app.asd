@@ -1,7 +1,16 @@
-(defun change-pathnames-to-local ()
+(defun cl-user::set-local-pathname-translations ()
+  (setf (logical-pathname-translations "app-local")
+	(list (list "app-local:**;*.*.*"
+		    #P"/Users/art/projects/lisp/cloud-analyzer/**/*.*")))
+  (values))
+
+
+
+(defun cl-user::change-pathnames-to-remote ()
   (setf (logical-pathname-translations "app")
-	(list (list "app:**;*.*"
-		    #P"/Users/art/projects/lisp/cloud-analyzer/**/*.*"))))
+	(list (list "app:**;*.*.*"
+		    #P"/app/**/*.*")))
+  (values))
   
 
 (let* ((current-file (or *compile-file-truename*
@@ -23,6 +32,9 @@
   (setf (logical-pathname-translations "app")
 	(list (list source-pattern-path
 		    target-pattern-path))))
+
+
+(cl-user::set-local-pathname-translations)
   
 
 (defsystem "app"
