@@ -92,7 +92,9 @@
   (let* ((highlight
            ;; To simplify comparison with paths inside data
            (reverse (highlight widget)))
-         (total (getf folder :size))
+         (total (if folder
+                    (getf folder :size)
+                    0))
          (min-block-size (/ total
                             5000)))
     (labels ((too-small (folder)
