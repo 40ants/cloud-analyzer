@@ -1,18 +1,19 @@
-FROM 40ants/base-lisp-image:0.15.0-sbcl-bin
+FROM 40ants/base-lisp-image:0.17.0-sbcl-bin
 
 EXPOSE 80
 EXPOSE 4005
 
 # These a dev dependencies to simplify log reading and support
 # file search from remote Emacs.
-RUN --mount=type=cache,target=/var/cache/apt --mount=type=cache,target=/var/lib/apt set -x; \
+RUN --mount=type=cache,target=/var/cache/apt \
+    --mount=type=cache,target=/var/lib/apt \
+    set -x; \
     apt-get update && \
     apt-get install -y \
-            silversearcher-ag \
-            lsof \
-            postgresql-client
-
-RUN mkdir -p /tmp/s6 && cd /tmp/s6 && \
+	    git \
+	    gcc \
+            postgresql-client && \
+    mkdir -p /tmp/s6 && cd /tmp/s6 && \
     git clone https://github.com/skarnet/skalibs && cd skalibs && \
     git checkout v2.10.0.2 && \
     ./configure && make install && cd /tmp/s6 && \
@@ -22,11 +23,21 @@ RUN mkdir -p /tmp/s6 && cd /tmp/s6 && \
     git clone https://github.com/skarnet/s6 && cd s6 && \
     git checkout v2.10.0.2 && \
     ./configure --with-lib=/usr/lib/execline && make install && \
-    cd / && rm -fr /tmp/s6
+    cd / && rm -fr /tmp/s6 && \
+    apt-get remove -y --auto-remove git gcc
 
 ENV CC=gcc
 COPY qlfile qlfile.lock app-deps.asd /app/
-RUN install-dependencies
+
+RUN --mount=type=cache,target=/var/cache/apt \
+    --mount=type=cache,target=/var/lib/apt \
+    set -x; \
+    apt-get update && \
+    apt-get install -y \
+	    gcc && \
+    install-dependencies && \
+    apt-get remove -y --auto-remove gcc
+    
 
 COPY . /app
 

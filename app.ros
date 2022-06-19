@@ -11,7 +11,9 @@ exec ros -Q -- $0 "$@"
   (:use :cl))
 (in-package :ros.script.app)
 
+
 (defun main (&rest argv)
   (declare (ignorable argv))
   (cl-user::start-server))
+
 ;;; vim: set ft=lisp lisp:

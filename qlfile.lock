@@ -5,4 +5,20 @@
 ("ultralisp" .
  (:class qlot/source/dist:source-dist
   :initargs (:distribution "http://dist.ultralisp.org/" :%version :latest)
-  :version "20220613194501"))
+  :version "20220619102500"))
+("slynk" .
+ (:class qlot/source/github:source-github
+  :initargs (:repos "svetlyak40wt/sly" :ref nil :branch "patches" :tag nil)
+  :version "github-030a8441f57f7e0bb401570935e741dfd9edfb83"))
+("sly-macrostep" .
+ (:class qlot/source/github:source-github
+  :initargs (:repos "joaotavora/sly-macrostep" :ref nil :branch nil :tag nil)
+  :version "github-5113e4e926cd752b1d0bcc1508b3ebad5def5fad"))
+("sly-named-readtables" .
+ (:class qlot/source/github:source-github
+  :initargs (:repos "joaotavora/sly-named-readtables" :ref nil :branch nil :tag nil)
+  :version "github-a5a42674ccffa97ccd5e4e9742beaf3ea719931f"))
+("sly-package-inferred" .
+ (:class qlot/source/github:source-github
+  :initargs (:repos "40ants/sly-package-inferred" :ref nil :branch nil :tag nil)
+  :version "github-ef3e24292abea3bc1196f50fa7da06dd266b6fc9"))

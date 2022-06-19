@@ -8,20 +8,21 @@
 (in-package #:yandex-disk-cleaner/api)
 
 
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (defparameter *client-id* (or (uiop:getenv "OAUTH_CLIENT_ID")
-                                ;; This is an id of a test oauth app:
-                                "aea7e40eb78b4c029521a4bdae19e71b"))
-  
-  (defparameter *client-secret* (or (uiop:getenv "OAUTH_CLIENT_SECRET")
-                                    "4a025622819440429a9291ea2ee01ed3")))
+(defun get-client-id ()
+  (or (uiop:getenv "OAUTH_CLIENT_ID")
+      ;; This is an id of a test oauth app:
+      "aea7e40eb78b4c029521a4bdae19e71b"))
+
+(defun get-client-secret ()
+  (or (uiop:getenv "OAUTH_CLIENT_SECRET")
+      "4a025622819440429a9291ea2ee01ed3"))
 
 (defvar *token*)
 
 
 (defun get-auth-url ()
   (format nil "https://oauth.yandex.ru/authorize?response_type=code&client_id=~A"
-          *client-id*))
+          (get-client-id)))
 
 
 (defun retrieve-token (code)
@@ -29,8 +30,8 @@
          (response (dex:post url
                              :content (list (cons "grant_type" "authorization_code")
                                             (cons "code" code)
-                                            (cons "client_id" *client-id*)
-                                            (cons "client_secret" *client-secret*))))
+                                            (cons "client_id" (get-client-id))
+                                            (cons "client_secret" (get-client-secret)))))
          (data (jonathan:parse response)))
     (values (getf data :|access_token|)
             (getf data :|refresh_token|))))
@@ -41,8 +42,8 @@
          (response (dex:post url
                              :content (list (cons "grant_type" "refresh_token")
                                             (cons "refresh_token" refresh-token) 
-                                            (cons "client_id" *client-id*)
-                                            (cons "client_secret" *client-secret*))))
+                                            (cons "client_id" (get-client-id))
+                                            (cons "client_secret" (get-client-secret)))))
          (data (jonathan:parse response)))
     (values (getf data :|access_token|)
             (getf data :|refresh_token|))))
@@ -239,8 +240,7 @@
              (name path)
              (max-depth 100000)
              (increment-progress nil))
-  (let ((lparallel:*kernel* (lparallel:make-kernel 10)))
-    (%du path name max-depth increment-progress)))
+  (%du path name max-depth increment-progress))
 
 
 (defvar *data* nil)

@@ -1,9 +1,11 @@
 #!/bin/bash
 
-VERSION=0.1.1
+VERSION=0.1.7
 
 export DOCKER_BUILDKIT=1
 
-docker build --tag cr.yandex/crp7b1mum9l62quiuuu0/cloud-analyzer:$VERSION .
+set -ex
 
-#docker push cr.yandex/crp7b1mum9l62quiuuu0/cloud-analyzer:$VERSION
+docker build --add-host 'beta.quicklisp.org:13.33.243.6' --progress plain --tag cr.yandex/crp7b1mum9l62quiuuu0/cloud-analyzer:$VERSION .
+
+docker push cr.yandex/crp7b1mum9l62quiuuu0/cloud-analyzer:$VERSION

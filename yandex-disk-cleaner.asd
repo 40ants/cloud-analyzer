@@ -8,7 +8,7 @@
 
 (defsystem "yandex-disk-cleaner"
   :class :package-inferred-system
-  :pathname "src"
+  :pathname #P"app:src;"
   :depends-on ("yandex-disk-cleaner/widgets/analyzer"
 	       "yandex-disk-cleaner/server"))
 
