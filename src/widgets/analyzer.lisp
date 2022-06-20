@@ -23,7 +23,10 @@
   (:import-from #:log4cl-extras/error
                 #:with-log-unhandled)
   (:import-from #:reblocks-ui/form
-                #:render-form-and-button))
+                #:render-form-and-button)
+  (:import-from #:yandex-cloud-analyzer/widgets/yandex-metrika
+                #:reach-goal
+                #:render-counter))
 (in-package #:yandex-disk-cleaner/widgets/analyzer)
 
 
@@ -99,6 +102,7 @@
                              (let ((title (format nil "Занято ~A из ~A."
                                                   usage total)))
                                (make-progress-bar raw-total
+                                                  :refresh nil
                                                   :progress raw-usage
                                                   :title title)))))
          (analyzer (make-instance 'analyzer
@@ -130,18 +134,22 @@
 (defmethod reblocks/widget:render ((widget analyzer))
   (flet ((try-again (&rest rest)
            (declare (ignore rest))
+           (reach-goal "disk-size-recalculation")
            (setf (disk-space widget) nil
                  (files widget) nil
                  (processing-error widget) nil
                  (progress widget) (make-progress-bar (get-total-usage :unit :raw)))
            (start-processing widget)
            (reblocks/widget:update widget)))
+    (render-counter)
+    
     (reblocks/html:with-html
       (:h1 :class "header"
            (:a :href "/"
                "Cloud Analyzer"))
       (cond
         ((processing-error widget)
+         (reach-goal "error-shown")
          (:div :class "callout alert"
                (:p "При обработке данных произошла ошибка:")
                (:p (format nil "\"~A\"" (processing-error widget))))
@@ -150,6 +158,7 @@
               #'try-again
               :method :post)))
         ((files widget)
+         (reach-goal "diagram-shown")
          (:table
           (:tr :style "vertical-align: top;"
                (:td :style "height: 600px; overflow: scroll; display: block;"

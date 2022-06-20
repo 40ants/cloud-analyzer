@@ -28,25 +28,27 @@
 
 (defun make-progress-bar (total-size &key
                                        (progress 0)
+                                       (refresh t)
                                        title)
   (let* ((progress (make-instance 'progress-bar
                                   :total-size total-size
                                   :progress progress
-                                  :title title))
-         (code (reblocks/actions:make-action
-                (lambda (&rest rest)
-                  (declare (ignore rest))
-                  (if (on-next-update progress)
-                      (funcall (on-next-update progress))
-                      (reblocks/widget:update progress)))))
-         (refresh-code
-           (ps:ps* `(ps:chain window
-                              (set-timeout
-                               (lambda ()
-                                 (initiate-action ,code))
-                               1000)))))
-    (setf (refresh-code progress)
-          refresh-code)
+                                  :title title)))
+    (when refresh
+      (let* ((code (reblocks/actions:make-action
+                    (lambda (&rest rest)
+                      (declare (ignore rest))
+                      (if (on-next-update progress)
+                          (funcall (on-next-update progress))
+                          (reblocks/widget:update progress)))))
+             (refresh-code
+               (ps:ps* `(ps:chain window
+                                  (set-timeout
+                                   (lambda ()
+                                     (initiate-action ,code))
+                                   1000)))))
+        (setf (refresh-code progress)
+              refresh-code)))
     (values progress)))
 
 
