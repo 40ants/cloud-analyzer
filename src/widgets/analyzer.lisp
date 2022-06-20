@@ -111,7 +111,7 @@
 (defun set-data (analyzer data)
   (let* ((datasource (make-disk-tree data))
          (tree (make-tree-widget datasource (list "/")))
-         (diagram (make-disk-size)))
+         (diagram (make-disk-size data)))
     (flet ((on-block-selection-wrapper (path)
              (on-block-selection analyzer path))
            (on-file-selection-wrapper (path)

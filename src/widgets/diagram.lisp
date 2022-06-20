@@ -15,13 +15,17 @@
   ((highlight :documentation "Path to currently selected block, starting from \"/\"."
               :initform nil
               :accessor highlight)
+   (data :documentation "Folders structure."
+         :initarg :data
+         :reader data)
    (on-block-selection :initform nil
                        :initarg :on-block-selection
                        :accessor on-block-selection)))
 
 
-(defun make-disk-size (&key on-block-selection)
+(defun make-disk-size (data &key on-block-selection)
   (make-instance 'disk-size
+                 :data data
                  :on-block-selection on-block-selection))
 
 
@@ -92,9 +96,9 @@
   (let* ((highlight
            ;; To simplify comparison with paths inside data
            (reverse (highlight widget)))
-         (total (if folder
-                    (getf folder :size)
-                    0))
+         (total (progn (unless folder
+                         (break))
+                       (getf folder :size)))
          (min-block-size (/ total
                             5000)))
     (labels ((too-small (folder)
@@ -222,8 +226,7 @@
               :onclick on-click
               " "
               (render-folder widget
-                             ;; TODO: replace with data from analyzer
-                             yandex-disk-cleaner/api::*data*
+                             (data widget)
                              used-media-types))
         (:div :class "legend"
               (loop for media-type in (sort (alexandria:hash-table-keys *colors*)
