@@ -2,7 +2,7 @@ dist ultralisp http://dist.ultralisp.org/
 
 # github slynk svetlyak40wt/sly :branch patches
 github slynk svetlyak40wt/sly :branch experiment-with-logical-paths
-github sly-macrostep joaotavora/sly-macrostep
-github sly-named-readtables joaotavora/sly-named-readtables
-github sly-package-inferred 40ants/sly-package-inferred
+github slynk-macrostep joaotavora/sly-macrostep
+github slynk-named-readtables joaotavora/sly-named-readtables
+github slynk-package-inferred 40ants/sly-package-inferred
 

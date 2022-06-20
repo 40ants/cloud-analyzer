@@ -1,9 +1,9 @@
-(uiop:define-package #:yandex-cloud-analyzer/widgets/yandex-metrika
+(uiop:define-package #:yandex-disk-cleaner/widgets/yandex-metrika
   (:use #:cl)
   (:import-from #:log4cl)
   (:import-from #:function-cache
                 #:defcached))
-(in-package #:yandex-cloud-analyzer/widgets/yandex-metrika)
+(in-package #:yandex-disk-cleaner/widgets/yandex-metrika)
 
 
 (defcached get-metrika-code ()

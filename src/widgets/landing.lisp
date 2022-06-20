@@ -4,7 +4,7 @@
   (:import-from #:reblocks/dependencies)
   (:import-from #:reblocks/widget
                 #:defwidget)
-  (:import-from #:yandex-cloud-analyzer/widgets/yandex-metrika
+  (:import-from #:yandex-disk-cleaner/widgets/yandex-metrika
                 #:render-counter))
 (in-package #:yandex-disk-cleaner/widgets/landing)
 

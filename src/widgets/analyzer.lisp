@@ -24,7 +24,7 @@
                 #:with-log-unhandled)
   (:import-from #:reblocks-ui/form
                 #:render-form-and-button)
-  (:import-from #:yandex-cloud-analyzer/widgets/yandex-metrika
+  (:import-from #:yandex-disk-cleaner/widgets/yandex-metrika
                 #:reach-goal
                 #:render-counter))
 (in-package #:yandex-disk-cleaner/widgets/analyzer)
