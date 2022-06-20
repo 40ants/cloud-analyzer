@@ -5,11 +5,11 @@
 ("ultralisp" .
  (:class qlot/source/dist:source-dist
   :initargs (:distribution "http://dist.ultralisp.org/" :%version :latest)
-  :version "20220619102500"))
+  :version "20220619120500"))
 ("slynk" .
  (:class qlot/source/github:source-github
-  :initargs (:repos "svetlyak40wt/sly" :ref nil :branch "patches" :tag nil)
-  :version "github-030a8441f57f7e0bb401570935e741dfd9edfb83"))
+  :initargs (:repos "svetlyak40wt/sly" :ref nil :branch "experiment-with-logical-paths" :tag nil)
+  :version "github-35f601eff75dcec5b17ea0b4223dd072aa65bcf8"))
 ("sly-macrostep" .
  (:class qlot/source/github:source-github
   :initargs (:repos "joaotavora/sly-macrostep" :ref nil :branch nil :tag nil)
