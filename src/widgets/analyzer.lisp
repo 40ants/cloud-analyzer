@@ -137,11 +137,14 @@
            (start-processing widget)
            (reblocks/widget:update widget)))
     (reblocks/html:with-html
+      (:h1 :class "header"
+           (:a :href "/"
+               "Cloud Analyzer"))
       (cond
         ((processing-error widget)
          (:div :class "callout alert"
-          (:p "При обработке данных произошла ошибка:")
-          (:p (format nil "\"~A\"" (processing-error widget))))
+               (:p "При обработке данных произошла ошибка:")
+               (:p (format nil "\"~A\"" (processing-error widget))))
          (:p (render-form-and-button
               "Попробовать снова"
               #'try-again
@@ -169,7 +172,6 @@
   (list
    (reblocks-lass:make-dependency
      '(.analyzer
-       :margin-top 4em
        :display flex
        :flex-direction column
        :align-items center))))
