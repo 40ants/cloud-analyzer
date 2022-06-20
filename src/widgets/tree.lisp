@@ -184,9 +184,9 @@
      '(body
        (.tree :list-style none
               :cursor pointer
-              :padding-left 24px
               :overflow hidden
               :transition "height 150ms ease-out, opacity 150ms ease-out"
+        (.leaf-node :padding-left 24px)
         ((.selected > .filename) :background "#c6e3f9")
         (.size :margin-left 1em
                :color "#4949ff")
