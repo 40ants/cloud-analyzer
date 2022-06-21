@@ -1,5 +1,6 @@
 (uiop:define-package #:app/widgets/landing
   (:use #:cl)
+  (:import-from #:spinneret/cl-markdown)
   (:import-from #:reblocks-lass)
   (:import-from #:reblocks/dependencies)
   (:import-from #:reblocks/widget
