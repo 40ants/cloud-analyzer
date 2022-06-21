@@ -1,10 +1,10 @@
-(uiop:define-package #:yandex-disk-cleaner/datasource
+(uiop:define-package #:app/datasource
   (:use #:cl)
-  (:import-from #:yandex-disk-cleaner/widgets/tree
+  (:import-from #:app/widgets/tree
                 #:retrieve-nodes)
-  (:import-from #:yandex-disk-cleaner/utils
+  (:import-from #:app/utils
                 #:path-to-string))
-(in-package #:yandex-disk-cleaner/datasource)
+(in-package #:app/datasource)
 
 
 (defclass disk-tree ()
@@ -18,7 +18,7 @@
 
 
 (defun dir-files (path)
-  (loop for item in (yandex-disk-cleaner/api::%list-dir (path-to-string path))
+  (loop for item in (app/api::%list-dir (path-to-string path))
         when (string= (getf item :|type|)
                       "file")
           collect (list :name (getf item :|name|)

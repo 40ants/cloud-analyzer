@@ -1,19 +1,19 @@
-(uiop:define-package #:yandex-disk-cleaner/app
+(uiop:define-package #:app/app
   (:use #:cl)
   (:import-from #:reblocks/app
                 #:defapp)
-  (:import-from #:yandex-disk-cleaner/widgets/login
+  (:import-from #:app/widgets/login
                 #:get-token
                 #:make-login-page)
-  (:import-from #:yandex-disk-cleaner/widgets/landing
+  (:import-from #:app/widgets/landing
                 #:make-landing-page)
   (:import-from #:reblocks-navigation-widget
                 #:defroutes)
-  (:import-from #:yandex-disk-cleaner/widgets/analyzer
+  (:import-from #:app/widgets/analyzer
                 #:make-analyzer)
-  (:import-from #:yandex-disk-cleaner/api
+  (:import-from #:app/api
                 #:*token*))
-(in-package #:yandex-disk-cleaner/app)
+(in-package #:app/app)
 
 
 (defapp disk-analyzer

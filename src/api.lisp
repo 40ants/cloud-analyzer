@@ -1,11 +1,11 @@
-(uiop:define-package #:yandex-disk-cleaner/api
+(uiop:define-package #:app/api
   (:use #:cl)
   (:import-from #:dexador)
   (:import-from #:jonathan)
   (:import-from #:lparallel)
-  (:import-from #:yandex-disk-cleaner/utils
+  (:import-from #:app/utils
                 #:humanize-size))
-(in-package #:yandex-disk-cleaner/api)
+(in-package #:app/api)
 
 
 (defun get-client-id ()

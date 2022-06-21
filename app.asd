@@ -35,7 +35,22 @@
 
 
 (cl-user::set-local-pathname-translations)
-  
+
+
+(pushnew "~/projects/lisp/cffi/" asdf:*central-registry*
+         :test #'equal)
+(pushnew "~/projects/lisp/cl-plus-ssl/" asdf:*central-registry*
+         :test #'equal)
+(pushnew "~/projects/lisp/reblocks/" asdf:*central-registry*
+         :test #'equal)
+
 
 (defsystem "app"
-  :depends-on ("yandex-disk-cleaner"))
+  :class :package-inferred-system
+  :pathname #P"app:src;"
+  :depends-on ("app/widgets/analyzer"
+	       "app/server"))
+
+
+(asdf:register-system-packages "colored" '(#:org.shirakumo.alloy.colored))
+

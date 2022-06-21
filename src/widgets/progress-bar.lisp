@@ -1,9 +1,9 @@
-(uiop:define-package #:yandex-disk-cleaner/widgets/progress-bar
+(uiop:define-package #:app/widgets/progress-bar
   (:use #:cl)
   (:import-from #:bordeaux-threads)
   (:import-from #:reblocks/widget
                 #:defwidget))
-(in-package #:yandex-disk-cleaner/widgets/progress-bar)
+(in-package #:app/widgets/progress-bar)
 
 
 (defwidget progress-bar ()

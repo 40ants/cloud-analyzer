@@ -1,14 +1,14 @@
-(uiop:define-package #:yandex-disk-cleaner/widgets/diagram
+(uiop:define-package #:app/widgets/diagram
   (:use #:cl)
   (:import-from #:str)
   (:import-from #:org.shirakumo.alloy.colored)
   (:import-from #:reblocks/actions)
   (:import-from #:reblocks/dependencies)
   (:import-from #:reblocks-lass)
-  (:import-from #:yandex-disk-cleaner/api)
+  (:import-from #:app/api)
   (:import-from #:reblocks/widget
                 #:defwidget))
-(in-package #:yandex-disk-cleaner/widgets/diagram)
+(in-package #:app/widgets/diagram)
 
 
 (defwidget disk-size ()

@@ -1,11 +1,11 @@
-(uiop:define-package #:yandex-disk-cleaner/widgets/tree
+(uiop:define-package #:app/widgets/tree
   (:use #:cl)
   (:import-from #:reblocks/widget
                 #:defwidget)
-  (:import-from #:yandex-disk-cleaner/utils
+  (:import-from #:app/utils
                 #:humanize-size)
   (:import-from #:reblocks/dependencies))
-(in-package #:yandex-disk-cleaner/widgets/tree)
+(in-package #:app/widgets/tree)
 
 
 (defwidget node ()

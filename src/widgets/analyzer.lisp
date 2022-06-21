@@ -1,33 +1,33 @@
-(uiop:define-package #:yandex-disk-cleaner/widgets/analyzer
+(uiop:define-package #:app/widgets/analyzer
   (:use #:cl)
   (:import-from #:reblocks/widget
                 #:defwidget)
-  (:import-from #:yandex-disk-cleaner/widgets/diagram
+  (:import-from #:app/widgets/diagram
                 #:make-disk-size
                 #:highlight-block)
-  (:import-from #:yandex-disk-cleaner/widgets/tree
+  (:import-from #:app/widgets/tree
                 #:expand-path
                 #:make-tree-widget)
-  (:import-from #:yandex-disk-cleaner/datasource
+  (:import-from #:app/datasource
                 #:make-disk-tree)
-  (:import-from #:yandex-disk-cleaner/widgets/progress-bar
+  (:import-from #:app/widgets/progress-bar
                 #:on-next-update
                 #:increment-progress
                 #:make-progress-bar)
-  (:import-from #:yandex-disk-cleaner/api
+  (:import-from #:app/api
                 #:du
                 #:get-total-usage)
-  (:import-from #:yandex-disk-cleaner/widgets/login
+  (:import-from #:app/widgets/login
                 #:get-token
                 #:get-username)
   (:import-from #:log4cl-extras/error
                 #:with-log-unhandled)
   (:import-from #:reblocks-ui/form
                 #:render-form-and-button)
-  (:import-from #:yandex-disk-cleaner/widgets/yandex-metrika
+  (:import-from #:app/widgets/yandex-metrika
                 #:reach-goal
                 #:render-counter))
-(in-package #:yandex-disk-cleaner/widgets/analyzer)
+(in-package #:app/widgets/analyzer)
 
 
 (defwidget analyzer ()
@@ -86,7 +86,7 @@
                       :name (format nil "data-retrieve-for ~A"
                                     username)
                       :initial-bindings (list*
-                                         (cons 'yandex-disk-cleaner/api::*token*
+                                         (cons 'app/api::*token*
                                                token)
                                          bordeaux-threads:*default-special-bindings*))
       (values))))
@@ -96,9 +96,9 @@
   (let* ((total-size (get-total-usage :unit :raw))
          (progress-bar (make-progress-bar total-size))
          (usage-progress (multiple-value-bind (usage total)
-                             (yandex-disk-cleaner/api::get-total-usage)
+                             (app/api::get-total-usage)
                            (multiple-value-bind (raw-usage raw-total)
-                               (yandex-disk-cleaner/api::get-total-usage :unit :raw)
+                               (app/api::get-total-usage :unit :raw)
                              (let ((title (format nil "Занято ~A из ~A."
                                                   usage total)))
                                (make-progress-bar raw-total
@@ -120,9 +120,9 @@
              (on-block-selection analyzer path))
            (on-file-selection-wrapper (path)
              (on-file-selection analyzer path)))
-      (setf (yandex-disk-cleaner/widgets/diagram::on-block-selection diagram)
+      (setf (app/widgets/diagram::on-block-selection diagram)
             #'on-block-selection-wrapper)
-      (setf (yandex-disk-cleaner/widgets/tree::on-click tree)
+      (setf (app/widgets/tree::on-click tree)
             #'on-file-selection-wrapper)
       (setf (files analyzer)
             tree)

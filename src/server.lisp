@@ -1,12 +1,14 @@
-(uiop:define-package #:yandex-disk-cleaner/server
+(uiop:define-package #:app/server
   (:use #:cl)
   (:import-from #:log4cl)
   (:import-from #:woo)
-  (:import-from #:yandex-disk-cleaner/app
+  (:import-from #:app/app
                 #:disk-analyzer)
-  (:import-from #:yandex-disk-cleaner/slynk
-                #:start-slynk-if-needed))
-(in-package #:yandex-disk-cleaner/server)
+  (:import-from #:app/slynk
+                #:start-slynk-if-needed)
+  (:export
+   #:start))
+(in-package #:app/server)
 
 
 (defun make-lparallel-kernel-if-needed ()

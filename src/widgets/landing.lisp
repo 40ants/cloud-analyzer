@@ -1,12 +1,12 @@
-(uiop:define-package #:yandex-disk-cleaner/widgets/landing
+(uiop:define-package #:app/widgets/landing
   (:use #:cl)
   (:import-from #:reblocks-lass)
   (:import-from #:reblocks/dependencies)
   (:import-from #:reblocks/widget
                 #:defwidget)
-  (:import-from #:yandex-disk-cleaner/widgets/yandex-metrika
+  (:import-from #:app/widgets/yandex-metrika
                 #:render-counter))
-(in-package #:yandex-disk-cleaner/widgets/landing)
+(in-package #:app/widgets/landing)
 
 
 (defwidget landing-page ()

@@ -1,9 +1,9 @@
 How to build app-deps.asd:
 
-(real-main "app" :except (list "yandex-disk-cleaner" "sb-bsd-sockets" "sb-cltl2" "sb-introspect" "sb-posix" "sb-rotate-byte"))
+(real-main "app" :except (list "sb-bsd-sockets" "sb-cltl2" "sb-introspect" "sb-posix" "sb-rotate-byte"))
 or
 
-qlot exec gen-deps-system --except yandex-disk-cleaner,sb-bsd-sockets,sb-cltl2,sb-introspect,sb-posix,sb-rotate-byte app
+qlot exec gen-deps-system --except sb-bsd-sockets,sb-cltl2,sb-introspect,sb-posix,sb-rotate-byte app
 
 Yandex Metrika Goals:
 

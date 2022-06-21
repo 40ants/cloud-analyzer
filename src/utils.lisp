@@ -1,6 +1,6 @@
-(uiop:define-package #:yandex-disk-cleaner/utils
+(uiop:define-package #:app/utils
   (:use #:cl))
-(in-package #:yandex-disk-cleaner/utils)
+(in-package #:app/utils)
 
 
 (defun path-to-string (path)

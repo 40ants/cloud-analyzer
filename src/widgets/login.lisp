@@ -1,11 +1,11 @@
-(uiop:define-package #:yandex-disk-cleaner/widgets/login
+(uiop:define-package #:app/widgets/login
   (:use #:cl)
   (:import-from #:reblocks/widget
                 #:defwidget)
-  (:import-from #:yandex-disk-cleaner/api
+  (:import-from #:app/api
                 #:retrieve-token
                 #:get-auth-url))
-(in-package #:yandex-disk-cleaner/widgets/login)
+(in-package #:app/widgets/login)
 
 
 (defwidget login-page ()
@@ -38,11 +38,11 @@
        ;;       (:b username)))
        )
       (code
-       (let ((yandex-disk-cleaner/api::*token* (retrieve-token code)))
+       (let ((app/api::*token* (retrieve-token code)))
          (setf (reblocks/session:get-value :token)
-               yandex-disk-cleaner/api::*token*
+               app/api::*token*
                (reblocks/session:get-value :username)
-               (yandex-disk-cleaner/api::get-login))
+               (app/api::get-login))
          (reblocks/response:redirect "/analyzer"))
        )
       (t

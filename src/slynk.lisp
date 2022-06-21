@@ -1,4 +1,4 @@
-(defpackage #:yandex-disk-cleaner/slynk
+(defpackage #:app/slynk
   (:use #:cl)
   (:import-from #:log4cl)
   (:import-from #:global-vars
@@ -12,7 +12,7 @@
   (:export
    #:*connections*
    #:start-slynk-if-neede))
-(in-package #:yandex-disk-cleaner/slynk)
+(in-package #:app/slynk)
 
 
 (define-global-var *connections* nil
