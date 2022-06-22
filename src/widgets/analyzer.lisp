@@ -140,13 +140,22 @@
                  (processing-error widget) nil
                  (progress widget) (make-progress-bar (get-total-usage :unit :raw)))
            (start-processing widget)
-           (reblocks/widget:update widget)))
+           (reblocks/widget:update widget))
+         (logout (&rest rest)
+           (declare (ignore rest))
+           (reblocks/session:reset)
+           (reblocks/response:redirect "/")))
     (render-counter)
     
     (reblocks/html:with-html
-      (:h1 :class "header"
-           (:a :href "/"
-               "Cloud Analyzer"))
+      (:header
+       (:h1 :class "header"
+            (:a :href "/"
+                "Cloud Analyzer"))
+       (render-form-and-button "Выйти"
+                               #'logout
+                               :method :post
+                               :button-class "button secondary logout"))
       (cond
         ((processing-error widget)
          (reach-goal "error-shown")
@@ -183,4 +192,20 @@
      '(.analyzer
        :display flex
        :flex-direction column
-       :align-items center))))
+       :align-items center
+       (header
+        :width 100%
+        :display flex
+        :flex-direction row
+        :align-items center
+        :justify-content space-between
+        (h1 :margin-left 1em
+            :width 100%
+            :text-align center)
+
+        (form
+         :justify-self end
+         :margin-right 1em)
+
+        ((:and .button .logout)
+         :margin 0))))))
