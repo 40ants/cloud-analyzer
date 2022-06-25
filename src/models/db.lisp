@@ -1,21 +1,29 @@
 (uiop:define-package #:cloud-analyzer/models/db
-  (:use #:cl))
+  (:use #:cl)
+  (:import-from #:function-cache
+                #:defcached))
 (in-package #:cloud-analyzer/models/db)
 
 
 (defvar *connection* nil)
 
-(defun get-db-host ()
-  "localhost")
+(defun whoami ()
+  (uiop:run-program "whoami" :output '(:string :stripped t)))
 
-(defun get-db-name ()
-  "art")
+(defcached get-db-host ()
+  (or (uiop:getenv "DB_HOST")
+      "localhost"))
 
-(defun get-db-user ()
-  "art")
+(defcached get-db-name ()
+  (or (uiop:getenv "DB_NAME")
+      (whoami)))
 
-(defun get-db-pass ()
-  nil)
+(defcached get-db-user ()
+  (or (uiop:getenv "DB_USER")
+      (whoami)))
+
+(defcached get-db-pass ()
+  (uiop:getenv "DB_PASS"))
 
 
 (defmacro with-connection (&body body)
