@@ -16,6 +16,11 @@
   (or (uiop:getenv "DB_HOST")
       "localhost"))
 
+(defcached get-db-port ()
+  (parse-integer
+   (or (uiop:getenv "DB_PORT")
+       "5432")))
+
 (defcached get-db-name ()
   (or (uiop:getenv "DB_NAME")
       (whoami)))
@@ -28,14 +33,20 @@
   (uiop:getenv "DB_PASS"))
 
 
+(defun run-with-connection (thunk)
+  (dbi:with-connection (*connection*
+                        :postgres
+                        :host (get-db-host)
+                        :port (get-db-port)
+                        :database-name (get-db-name)
+                        :username (get-db-user)
+                        :password (get-db-pass))
+    (funcall thunk)))
+
+
 (defmacro with-connection (&body body)
-  `(dbi:with-connection (*connection*
-                         :postgres
-                         :host (get-db-host)
-                         :database-name (get-db-name)
-                         :username (get-db-user)
-                         :password (get-db-pass))
-     ,@body))
+  `(run-with-connection (lambda ()
+                          ,@body)))
 
 
 (defun query (query &rest params)
