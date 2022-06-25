@@ -1,10 +1,10 @@
-(uiop:define-package #:cloud-analyzer/models/run-stats
+(uiop:define-package #:app/models/run-stats
   (:use #:cl)
-  (:import-from #:cloud-analyzer/models/db
+  (:import-from #:app/models/db
                 #:query
                 #:execute
                 #:with-connection))
-(in-package #:cloud-analyzer/models/run-stats)
+(in-package #:app/models/run-stats)
 
 ;; Schema
 ;; create table run_stats (username text, created_at timestamp, total bigint, used bigint, folders_count bigint, files_count bigint);

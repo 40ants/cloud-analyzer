@@ -13,9 +13,9 @@
                 #:make-analyzer)
   (:import-from #:app/api
                 #:*token*)
-  (:import-from #:cloud-analyzer/widgets/adminka
+  (:import-from #:app/widgets/adminka
                 #:make-adminka)
-  (:import-from #:cloud-analyzer/widgets/header
+  (:import-from #:app/widgets/header
                 #:make-page-with-header))
 (in-package #:app/app)
 

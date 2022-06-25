@@ -1,4 +1,4 @@
-(uiop:define-package #:cloud-analyzer/widgets/adminka
+(uiop:define-package #:app/widgets/adminka
   (:use #:cl)
   (:import-from #:reblocks/widget
                 #:render
@@ -9,9 +9,9 @@
                 #:with-html)
   (:import-from #:app/widgets/login
                 #:get-username)
-  (:import-from #:cloud-analyzer/models/run-stats
+  (:import-from #:app/models/run-stats
                 #:get-stats))
-(in-package #:cloud-analyzer/widgets/adminka)
+(in-package #:app/widgets/adminka)
 
 
 (defcached is-admin (username)

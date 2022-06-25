@@ -1,4 +1,4 @@
-(uiop:define-package #:cloud-analyzer/widgets/header
+(uiop:define-package #:app/widgets/header
   (:use #:cl)
   (:import-from #:reblocks-lass)
   (:import-from #:reblocks/widget
@@ -10,7 +10,7 @@
                 #:render-form-and-button)
   (:import-from #:reblocks/dependencies
                 #:get-dependencies))
-(in-package #:cloud-analyzer/widgets/header)
+(in-package #:app/widgets/header)
 
 
 (defwidget page-with-header ()

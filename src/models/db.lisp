@@ -1,8 +1,8 @@
-(uiop:define-package #:cloud-analyzer/models/db
+(uiop:define-package #:app/models/db
   (:use #:cl)
   (:import-from #:function-cache
                 #:defcached))
-(in-package #:cloud-analyzer/models/db)
+(in-package #:app/models/db)
 
 
 (defvar *connection* nil)

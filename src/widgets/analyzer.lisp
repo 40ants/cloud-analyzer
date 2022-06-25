@@ -27,7 +27,7 @@
   (:import-from #:app/widgets/yandex-metrika
                 #:reach-goal
                 #:render-counter)
-  (:import-from #:cloud-analyzer/models/run-stats
+  (:import-from #:app/models/run-stats
                 #:save-run-stats))
 (in-package #:app/widgets/analyzer)
 
