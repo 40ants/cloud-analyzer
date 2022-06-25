@@ -1,6 +1,7 @@
 (uiop:define-package #:cloud-analyzer/models/run-stats
   (:use #:cl)
   (:import-from #:cloud-analyzer/models/db
+                #:query
                 #:execute
                 #:with-connection))
 (in-package #:cloud-analyzer/models/run-stats)
@@ -20,3 +21,17 @@
 
 
 
+(defun get-stats ()
+  (with-connection
+      (values
+       (getf (first (query "SELECT COUNT(*) as value FROM run_stats WHERE created_at > NOW() - '24 hour'::interval"))
+             :|value|)
+       (getf (first (query "SELECT COUNT(DISTINCT username) as value FROM run_stats WHERE created_at > NOW() - '24 hour'::interval"))
+             :|value|)
+       (first (query "SELECT username,
+                             COUNT(*) as count
+                        FROM run_stats
+                       WHERE created_at > NOW() - '24 hour'::interval
+                    GROUP BY username
+                    ORDER BY count DESC
+                       LIMIT 1")))))

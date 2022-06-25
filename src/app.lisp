@@ -12,7 +12,11 @@
   (:import-from #:app/widgets/analyzer
                 #:make-analyzer)
   (:import-from #:app/api
-                #:*token*))
+                #:*token*)
+  (:import-from #:cloud-analyzer/widgets/adminka
+                #:make-adminka)
+  (:import-from #:cloud-analyzer/widgets/header
+                #:make-page-with-header))
 (in-package #:app/app)
 
 
@@ -22,9 +26,12 @@
 
 (defroutes routes
     ("/login" (make-login-page))
-  ("/analyzer" (let ((*token* (get-token)))
+  ("/analyzer"  (make-page-with-header
                  (make-analyzer)))
-  ("/" (make-landing-page)))
+  ("/adminka" (make-page-with-header
+               (make-adminka)))
+  ("/" (make-page-with-header
+        (make-landing-page))))
 
 
 (defmethod reblocks/session:init ((app disk-analyzer))  
