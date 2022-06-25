@@ -17,6 +17,8 @@
   (:import-from #:app/api
                 #:du
                 #:get-total-usage)
+  (:import-from #:app/api
+                #:*token*)
   (:import-from #:app/widgets/login
                 #:get-token
                 #:get-username)
@@ -98,7 +100,8 @@
 
 
 (defun make-analyzer ()
-  (let* ((total-size (get-total-usage :unit :raw))
+  (let* ((*token* (get-token))
+         (total-size (get-total-usage :unit :raw))
          (progress-bar (make-progress-bar total-size))
          (usage-progress (multiple-value-bind (usage total)
                              (app/api::get-total-usage)
