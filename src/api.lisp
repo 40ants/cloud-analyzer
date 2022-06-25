@@ -121,9 +121,6 @@
             append data))))
 
 
-(defparameter *num-processed* nil)
-
-
 ;; depth 2 non-parallel: 375s
 ;; depth 2 10 threads: 131s
 ;; depth 2 20 threads: 141
@@ -171,13 +168,7 @@
         finally (return max-key)))
 
 
-(defun %du (&optional (path "/") (name path) (max-depth 2) (increment-progress nil))
-  (unless (null *num-processed*)
-    (incf *num-processed*)
-    (when (zerop (mod *num-processed* 10))
-      (format t ".")
-      (finish-output)))
-
+(defun %du (&optional (path "/") (name path) (max-depth 2) (increment-progress nil) stats)
   (let ((size 0)
         (subfolders nil)
         (media-types (make-hash-table :test 'equal))
@@ -206,10 +197,14 @@
               (let ((subfolder (%du item-path
                                     item-name
                                     (1- max-depth)
-                                    increment-progress)))
+                                    increment-progress
+                                    stats)))
                 (bt:with-lock-held (lock)
                   (incf (gethash (getf subfolder :media-type)
                                  media-types
+                                 0))
+                  (incf (gethash :num-dirs
+                                 stats
                                  0))
                   (push subfolder subfolders)
                   (incf size (getf subfolder :size))))))
@@ -218,6 +213,9 @@
               (bt:with-lock-held (lock)
                 (incf (gethash (getf item :|media_type|)
                                media-types
+                               0))
+                (incf (gethash :num-files
+                               stats
                                0))
                 (incf size file-size)
                 (when increment-progress
@@ -240,7 +238,11 @@
              (name path)
              (max-depth 100000)
              (increment-progress nil))
-  (%du path name max-depth increment-progress))
+  (let* ((stats (make-hash-table :synchronized t))
+         (tree (%du path name max-depth increment-progress stats)))
+    (values tree
+            (gethash :num-dirs stats 0)
+            (gethash :num-files stats 0))))
 
 
 (defvar *data* nil)

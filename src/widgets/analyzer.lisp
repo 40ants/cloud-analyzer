@@ -26,12 +26,16 @@
                 #:render-form-and-button)
   (:import-from #:app/widgets/yandex-metrika
                 #:reach-goal
-                #:render-counter))
+                #:render-counter)
+  (:import-from #:cloud-analyzer/models/run-stats
+                #:save-run-stats))
 (in-package #:app/widgets/analyzer)
 
 
 (defwidget analyzer ()
-  ((progress :initarg :progress
+  ((username :initarg :username
+             :reader username)
+   (progress :initarg :progress
              :initform nil
              :accessor progress)
    (usage-progress :initarg :usage-progress
@@ -68,8 +72,9 @@
     (labels ((retrieve-data ()
                (handler-case
                    (with-log-unhandled ()
-                     (let ((data (du :increment-progress #'increment-progress-wrapper)))
-                       (set-data widget data)
+                     (multiple-value-bind (data num-dirs num-files)
+                         (du :increment-progress #'increment-progress-wrapper)
+                       (set-data widget data num-dirs num-files)
 
                        (setf (on-next-update progress-bar)
                              (lambda ()
@@ -106,13 +111,14 @@
                                                   :progress raw-usage
                                                   :title title)))))
          (analyzer (make-instance 'analyzer
+                                  :username (reblocks/session:get-value :username)
                                   :progress progress-bar
                                   :usage-progress usage-progress)))
     (start-processing analyzer)
     (values analyzer)))
 
 
-(defun set-data (analyzer data)
+(defun set-data (analyzer data num-dirs num-files)
   (let* ((datasource (make-disk-tree data))
          (tree (make-tree-widget datasource (list "/")))
          (diagram (make-disk-size data)))
@@ -128,6 +134,13 @@
             tree)
       (setf (disk-space analyzer)
             diagram)
+      (multiple-value-bind (used total)
+          (get-total-usage :unit :raw)
+        (save-run-stats (username analyzer)
+                        total
+                        used
+                        num-dirs
+                        num-files))
       analyzer)))
 
 
