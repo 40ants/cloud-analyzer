@@ -1,5 +1,7 @@
 (uiop:define-package #:app/models/db
   (:use #:cl)
+  (:import-from #:dbi)
+  (:import-from #:dbd-postgres)
   (:import-from #:function-cache
                 #:defcached))
 (in-package #:app/models/db)
