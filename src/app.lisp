@@ -16,7 +16,9 @@
   (:import-from #:app/widgets/adminka
                 #:make-adminka)
   (:import-from #:app/widgets/header
-                #:make-page-with-header))
+                #:make-page-with-header)
+  (:import-from #:app/widgets/feedback
+                #:make-feedback))
 (in-package #:app/app)
 
 
@@ -28,6 +30,8 @@
     ("/login" (make-login-page))
   ("/analyzer"  (make-page-with-header
                  (make-analyzer)))
+  ("/feedback" (make-page-with-header
+                (make-feedback)))
   ("/adminka" (make-page-with-header
                (make-adminka)))
   ("/" (make-page-with-header

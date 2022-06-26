@@ -37,6 +37,9 @@
                 "Cloud Analyzer"))
        (cond
          ((get-username)
+          (:a :href "/feedback"
+              "Обратная связь")
+          
           (render-form-and-button "Выйти"
                                   #'logout
                                   :method :post
