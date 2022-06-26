@@ -42,3 +42,19 @@
 (reblocks/hooks:on-application-hook-handle-http-request set-token (env)
   (let ((*token* (get-token)))
     (reblocks/hooks:call-next-hook)))
+
+
+
+(defmethod reblocks/page:render :before ((app disk-analyzer) inner-html &rest rest)
+  (declare (ignore rest))
+  
+  (setf (reblocks/page:get-title)
+        "Cloud Analyzer - Экономит место и деньги!")
+  (setf (reblocks/page:get-description)
+        "Помогает сэкономить на хранении данных в \"облаках\".")
+  (setf (reblocks/page:get-keywords)
+        (list "облака"
+              "хранилище"
+              "анализатор"
+              "место"
+              "освободить")))
