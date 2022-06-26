@@ -105,13 +105,14 @@
   ;; fields name,type,size
   (let ((limit 1000)
         (offset 0)
-        (fields "_embedded.total,_embedded.offset,_embedded.limit,_embedded.items.path,_embedded.items.name,_embedded.items.type,_embedded.items.size,_embedded.items.media_type"))
+        (fields "_embedded.total,_embedded.offset,_embedded.limit,_embedded.items.path,_embedded.items.name,_embedded.items.type,_embedded.items.size,_embedded.items.media_type,_embedded.items.share"))
     (flet ((get-chunk ()
              (let* ((uri (format nil "/disk/resources/?~A"
                                  (quri:url-encode-params (list (cons "path" dir)
                                                                (cons "limit" limit)
                                                                (cons "offset" offset)
-                                                               (cons "fields" fields)))))
+                                                               (cons "fields" fields)
+                                                               ))))
                     (data (make-request uri)))
                (incf offset limit)
                (getf (getf data :|_embedded|)
@@ -175,53 +176,55 @@
         (lock (bt:make-lock))
         ;; To pass token inside lparallel threads:
         (token *token*))
-  
+
     (lparallel:pmapc
      (lambda (item)
        (let ((*token* token)
              (lparallel:*debug-tasks-p* nil)
              (type (getf item :|type|))
              (item-path (getf item :|path|))
-             (item-name (getf item :|name|)))
-         (cond
-           ((string= type "dir")
-            (unless (zerop max-depth)
-              (when increment-progress
-                (funcall increment-progress
-                         (format nil "~A/" item-name)
-                         ;; we don't count subfolders size
-                         ;; because their size alread counted inside
-                         ;; nested %du call
-                         0))
-              
-              (let ((subfolder (%du item-path
-                                    item-name
-                                    (1- max-depth)
-                                    increment-progress
-                                    stats)))
-                (bt:with-lock-held (lock)
-                  (incf (gethash (getf subfolder :media-type)
-                                 media-types
-                                 0))
-                  (incf (gethash :num-dirs
-                                 stats
-                                 0))
-                  (push subfolder subfolders)
-                  (incf size (getf subfolder :size))))))
-           ((string= type "file")
-            (let ((file-size (getf item :|size|)))
-              (bt:with-lock-held (lock)
-                (incf (gethash (getf item :|media_type|)
-                               media-types
-                               0))
-                (incf (gethash :num-files
-                               stats
-                               0))
-                (incf size file-size)
+             (item-name (getf item :|name|))
+             (shared (not (null (getf item :|share|)))))
+         (unless shared
+           (cond
+             ((string= type "dir")
+              (unless (zerop max-depth)
                 (when increment-progress
                   (funcall increment-progress
-                           item-name
-                           file-size))))))))
+                           (format nil "~A/" item-name)
+                           ;; we don't count subfolders size
+                           ;; because their size alread counted inside
+                           ;; nested %du call
+                           0))
+                
+                (let ((subfolder (%du item-path
+                                      item-name
+                                      (1- max-depth)
+                                      increment-progress
+                                      stats)))
+                  (bt:with-lock-held (lock)
+                    (incf (gethash (getf subfolder :media-type)
+                                   media-types
+                                   0))
+                    (incf (gethash :num-dirs
+                                   stats
+                                   0))
+                    (push subfolder subfolders)
+                    (incf size (getf subfolder :size))))))
+             ((string= type "file")
+              (let ((file-size (getf item :|size|)))
+                (bt:with-lock-held (lock)
+                  (incf (gethash (getf item :|media_type|)
+                                 media-types
+                                 0))
+                  (incf (gethash :num-files
+                                 stats
+                                 0))
+                  (incf size file-size)
+                  (when increment-progress
+                    (funcall increment-progress
+                             item-name
+                             file-size)))))))))
      (%list-dir path))
     
     (list :name name
