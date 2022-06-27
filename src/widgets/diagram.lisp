@@ -190,7 +190,9 @@
                 for color = (get-color media-type)
                 for light = (lighter color)
                 for dark = (darker color 0.3)
-                collect (list (format nil ".b-~A" media-type)
+                collect (list (list :or
+                                    (format nil ".b-~A" media-type)
+                                    (format nil ".b-~A::after" media-type))
                               :background
                               (format nil
                                       "linear-gradient(110deg, ~A 0%, ~A 100%);"
@@ -234,32 +236,31 @@
 (defmethod reblocks/dependencies:get-dependencies ((widget disk-size))
   (list
    (reblocks-lass:make-dependency
-     '(:keyframes "rotate"
-       (100% :transform "rotate(1turn)")))
+     '(:keyframes "moveGradient"
+       (50% :background-position 100% 50%)))
    (reblocks-lass:make-dependency
      '(.disk-size
+       ;; Idea of this gradient frame was taken from
+       ;; https://codepen.io/alphardex/pen/vYEYGzp
        (.selected :position relative
+                  :border-radius 3px
                   :z-index 0
-                  ;; :width 400px
-                  ;; :height 300px
-                  :border-radius 2px
                   :overflow hidden
-                  :padding 3px
-        )
+                  :padding 3px)
        ((:and .selected :before)
+        :position absolute
         :content ""
-	:position absolute
-	:z-index 2
-	:left -50%
-	:top -50%
-	:width 200%
-	:height 200%
-	:background-color "#399953"
-	:background-repeat no-repeat
-	:background-size "50% 50%, 50% 50%"
-	:background-position "0 0, 100% 0, 100% 100%, 0 100%"
-	:background-image "linear-gradient(#399953, #399953), linear-gradient(#fbb300, #fbb300), linear-gradient(#d53e33, #d53e33), linear-gradient(#377af5, #377af5)"
-        :animation "rotate 10s linear infinite")
+        :top -3px
+        :left -3px
+        :z-index -2
+        :width "calc(100% + 3px)"
+        :height "calc(100% + 3px)"
+
+        :background "linear-gradient(60deg, hsl(224, 85%, 66%), hsl(269, 85%, 66%), hsl(314, 85%, 66%), hsl(359, 85%, 66%), hsl(44, 85%, 66%), hsl(89, 85%, 66%), hsl(134, 85%, 66%), hsl(179, 85%, 66%))"
+        :background-size "300% 300%"
+        :background-position "0 50%"
+        :border-radius 6px
+        :animation "moveGradient 4s alternate infinite")
        ((:and .selected :after)
         :content ""
         :position absolute
@@ -268,7 +269,6 @@
         :top 3px
         :width "calc(100% - 6px)"
         :height "calc(100% - 6px)"
-        :background white
         :border-radius 5px)
         
        (.legend :margin-top 1em
