@@ -59,7 +59,10 @@
 
 
 (defmethod reblocks/widget:render ((widget progress-bar))
-  (let* ((percent
+  (let* ((value (* (/ (progress widget)
+                      (total-size widget))
+                   100))
+         (percent
            (format nil "~A%"
                    ;; We need to remove dot if current
                    ;; progress has no fractional part.
@@ -67,10 +70,11 @@
                    ;; displaying empty progress on the frontend:
                    (string-right-trim
                     '(#\.)
-                    (format nil "~4F"
-                            (* (/ (progress widget)
-                                  (total-size widget))
-                               100))))))
+                    (if (< value 10)
+                        (format nil "~,2F"
+                                value)
+                        (format nil "~,1F"
+                                value))))))
     (reblocks/html:with-html
       (:div :class "progress-container"
             :title (title widget)
