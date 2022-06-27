@@ -195,12 +195,7 @@
                               (format nil
                                       "linear-gradient(110deg, ~A 0%, ~A 100%);"
                                       (hsl-to-css light)
-                                      (hsl-to-css dark)))
-                collect (list (list :and
-                                    (format nil ".b-~A" media-type)
-                                    ".selected")
-                              :border '3px 'solid (hsl-to-css (lighter (complement-color color)
-                                                                       0.2)))))))
+                                      (hsl-to-css dark)))))))
 
 
 (defmethod reblocks/widget:render ((widget disk-size))
@@ -239,7 +234,43 @@
 (defmethod reblocks/dependencies:get-dependencies ((widget disk-size))
   (list
    (reblocks-lass:make-dependency
+     '(:keyframes "rotate"
+       (100% :transform "rotate(1turn)")))
+   (reblocks-lass:make-dependency
      '(.disk-size
+       (.selected :position relative
+                  :z-index 0
+                  ;; :width 400px
+                  ;; :height 300px
+                  :border-radius 2px
+                  :overflow hidden
+                  :padding 3px
+        )
+       ((:and .selected :before)
+        :content ""
+	:position absolute
+	:z-index 2
+	:left -50%
+	:top -50%
+	:width 200%
+	:height 200%
+	:background-color "#399953"
+	:background-repeat no-repeat
+	:background-size "50% 50%, 50% 50%"
+	:background-position "0 0, 100% 0, 100% 100%, 0 100%"
+	:background-image "linear-gradient(#399953, #399953), linear-gradient(#fbb300, #fbb300), linear-gradient(#d53e33, #d53e33), linear-gradient(#377af5, #377af5)"
+        :animation "rotate 10s linear infinite")
+       ((:and .selected :after)
+        :content ""
+        :position absolute
+        :z-index -1
+        :left 3px
+        :top 3px
+        :width "calc(100% - 6px)"
+        :height "calc(100% - 6px)"
+        :background white
+        :border-radius 5px)
+        
        (.legend :margin-top 1em
                 :display flex
                 :width 600px
