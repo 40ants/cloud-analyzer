@@ -35,9 +35,10 @@
                             "https://yastatic.net/s3/doc-binary/freeze/ru/id/8c9292ce69ef01f902b0ef13c29167a2110139fe.svg"))))
     (:section :class "example"
               (:p "Вот как выглядят результаты анализа:")
-              (:p (:img :src "https://storage.yandexcloud.net/cloud-analyzer-static/landing-demo.png"
-                        :width "1024"
-                        :height "607")))
+              (:p (:img :src "https://storage.yandexcloud.net/cloud-analyzer-static/landing-demo-v2-full-size.png"
+                        :width "1305"
+                        :height "794"))
+              (:p "Определённо, мне стоит найти время, смонтировать ролик про отпуск в Египте и освободить 83G в облачном хранилище!"))
     (:section :class "eula"
               (:p "Cloud Analyzer не сохраняет информацию с вашего диска в свою базу данных.")
               (:p ("Вы можете лично убедиться в этом, проанализировав [исходные коды приложения](https://github.com/40ants/cloud-analyzer).")))))
