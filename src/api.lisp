@@ -103,16 +103,17 @@
 
 (defun %list-dir (dir)
   ;; fields name,type,size
-  (let ((limit 1000)
-        (offset 0)
-        (fields "_embedded.total,_embedded.offset,_embedded.limit,_embedded.items.path,_embedded.items.name,_embedded.items.type,_embedded.items.size,_embedded.items.media_type,_embedded.items.share"))
+  (let* ((limit 1000)
+         (offset 0)
+         (fields "_embedded.total,_embedded.offset,_embedded.limit,_embedded.items.path,_embedded.items.name,_embedded.items.type,_embedded.items.size,_embedded.items.media_type,_embedded.items.share")
+         (params (quri:url-encode-params
+                  (list (cons "path" dir)
+                        (cons "limit" limit)
+                        (cons "offset" offset)
+                        (cons "fields" fields)))))
     (flet ((get-chunk ()
              (let* ((uri (format nil "/disk/resources/?~A"
-                                 (quri:url-encode-params (list (cons "path" dir)
-                                                               (cons "limit" limit)
-                                                               (cons "offset" offset)
-                                                               (cons "fields" fields)
-                                                               ))))
+                                 params))
                     (data (make-request uri)))
                (incf offset limit)
                (getf (getf data :|_embedded|)
@@ -184,7 +185,9 @@
              (type (getf item :|type|))
              (item-path (getf item :|path|))
              (item-name (getf item :|name|))
-             (shared (not (null (getf item :|share|)))))
+             (shared (and (not (null (getf item :|share|)))
+                          (not (getf (getf item :|share|)
+                                     :|is_owned|)))))
          (unless shared
            (cond
              ((string= type "dir")
