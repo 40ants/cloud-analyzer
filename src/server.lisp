@@ -2,6 +2,7 @@
   (:use #:cl)
   (:import-from #:log4cl)
   (:import-from #:woo)
+  (:import-from #:app/logging)
   (:import-from #:app/app
                 #:disk-analyzer)
   (:import-from #:app/slynk
@@ -22,6 +23,7 @@
 
 (defun start (&key (port 8080)
 		(interface "localhost"))
+  (app/logging::setup)
   (start-slynk-if-needed)
   (make-lparallel-kernel-if-needed)
   (reblocks/server:start :port port

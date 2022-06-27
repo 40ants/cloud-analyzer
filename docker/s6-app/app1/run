@@ -2,5 +2,5 @@
 
 mkdir -p /app/logs
 
-/app/app > /app/logs/app-stdout.log \
-	2> /app/logs/app-stderr.log
+/app/app >> /app/logs/app-stdout.log \
+	2>> /app/logs/app-stderr.log
