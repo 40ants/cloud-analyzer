@@ -101,7 +101,10 @@
 
 (defun make-analyzer ()
   (let* ((*token* (get-token))
-         (total-size (get-total-usage :unit :raw))
+         (total-size (progn
+                       (unless *token*
+                         (reblocks/response:redirect "/"))
+                       (get-total-usage :unit :raw)))
          (progress-bar (make-progress-bar total-size))
          (usage-progress (multiple-value-bind (usage total)
                              (app/api::get-total-usage)
