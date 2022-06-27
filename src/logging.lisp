@@ -6,10 +6,15 @@
 
 
 (defun setup ()
-  (log4cl-extras/config:setup
-   '(:level :info
-     :appenders ((this-console :layout :plain
-                               :filter :warn)
-                 (daily :layout :json
-                        :name-format "/app/logs/app.log"
-                        :backup-name-format "app%Y%m%d.log")))))
+  (let ((appenders
+          (append (list '(this-console
+                          :layout :plain
+                          :filter :warn))
+                  (when (probe-file "/app/logs")
+                    (list '(daily
+                            :layout :json
+                            :name-format "/app/logs/app.log"
+                            :backup-name-format "app%Y%m%d.log"))) )))
+    (log4cl-extras/config:setup
+     (list :level :info
+           :appenders appenders))))
