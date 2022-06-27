@@ -7,7 +7,7 @@
 (in-package #:app/models/feedback)
 
 
-;; create table feedback (created_at timestamp, username text, message text, seen boolean default false);
+;; create table feedback (created_at timestamp with time zone, username text, message text, seen boolean default false);
 
 (defun save-feedback (username message)
   (with-connection

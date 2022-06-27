@@ -7,7 +7,7 @@
 (in-package #:app/models/run-stats)
 
 ;; Schema
-;; create table run_stats (username text, created_at timestamp, total bigint, used bigint, folders_count bigint, files_count bigint);
+;; create table run_stats (username text, created_at timestamp with time zone, total bigint, used bigint, folders_count bigint, files_count bigint);
 ;; create index run_stats_idx on run_stats (username, created_at);
 
 (defun save-run-stats (username total used folders-count files-count)
