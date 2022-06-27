@@ -29,10 +29,11 @@
 
 
 (defmethod render ((widget feedback))
-  (flet ((process-submit (&key message &allow-other-keys)
+  (flet ((process-submit (&key message email &allow-other-keys)
            (let ((username (get-username)))
              (log:error "Form submitted" username message)
-             (save-feedback username message)
+             (save-feedback username message
+                            :email email)
              (setf (sent widget) t)
              (reblocks/widget:update widget))))
     (cond
@@ -43,13 +44,23 @@
       
       ((get-username)
        (with-html
-         (:p "Я буду рад узнать о ваших идеях о том, как можно сделать этот сервис лучше:")
+         (:p "Я буду рад узнать о ваших идеях о том, как можно сделать этот сервис лучше.")
          (with-html-form (:post #'process-submit)
-           (:textarea :name "message")
-           (:input :type "submit"
-                   :class "button"
-                   :name "submit-button"
-                   :value "Отправить"))))
+           (:p
+            (:label :for "email"
+                    "Если хотите чтобы я ответил, оставьте свой email:")
+            (:input :name "email"
+                    :type "email"
+                    :placeholder "somebody@yandex.ru"))
+           (:p
+            (:label :for "message"
+                    "Идея, багрепорт или пожелание счастья:")
+            (:textarea :name "message"))
+           (:p
+            (:input :type "submit"
+                    :class "button"
+                    :name "submit-button"
+                    :value "Отправить")))))
       (t
        (redirect "/")))))
 
