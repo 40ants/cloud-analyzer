@@ -67,12 +67,13 @@
   (let* ((headers (list (cons "Authorization"
                               (format nil "OAuth ~A"
                                       *token*))))
-         (retry-request (dex:retry-request num-retries :interval retry-interval)))
+         (retry-request (dex:retry-request num-retries :interval retry-interval))
+         (url (concatenate 'string
+                           "https://cloud-api.yandex.net/v1"
+                           path)))
     (handler-bind ((dex:http-request-failed retry-request))
       (multiple-value-bind (response status-code response-headers)
-          (dex:get (concatenate 'string
-                                "https://cloud-api.yandex.net/v1"
-                                path)
+          (dex:get url
                    :headers headers)
         (unless (= status-code 200)
           (error "Bad status code: ~A"
@@ -103,16 +104,16 @@
 
 (defun %list-dir (dir)
   ;; fields name,type,size
-  (let* ((limit 1000)
-         (offset 0)
-         (fields "_embedded.total,_embedded.offset,_embedded.limit,_embedded.items.path,_embedded.items.name,_embedded.items.type,_embedded.items.size,_embedded.items.media_type,_embedded.items.share")
-         (params (quri:url-encode-params
-                  (list (cons "path" dir)
-                        (cons "limit" limit)
-                        (cons "offset" offset)
-                        (cons "fields" fields)))))
+  (let ((limit 1000)
+        (offset 0)
+        (fields "_embedded.total,_embedded.offset,_embedded.limit,_embedded.items.path,_embedded.items.name,_embedded.items.type,_embedded.items.size,_embedded.items.media_type,_embedded.items.share"))
     (flet ((get-chunk ()
-             (let* ((uri (format nil "/disk/resources/?~A"
+             (let* ((params (quri:url-encode-params
+                             (list (cons "path" dir)
+                                   (cons "limit" limit)
+                                   (cons "offset" offset)
+                                   (cons "fields" fields))))
+                    (uri (format nil "/disk/resources/?~A"
                                  params))
                     (data (make-request uri)))
                (incf offset limit)
