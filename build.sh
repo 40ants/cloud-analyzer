@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION=0.1.19
+VERSION=0.1.20
 
 export DOCKER_BUILDKIT=1
 

@@ -5,16 +5,21 @@
 (in-package #:app/logging)
 
 
+(defun current-environment ()
+  (or (uiop:getenv "ENVIRONMENT")
+      "development"))
+
+
 (defun setup ()
   (let ((appenders
-          (append (list '(this-console
-                          :layout :plain
-                          :filter :warn))
-                  (when (probe-file "/app/logs")
-                    (list '(daily
-                            :layout :json
-                            :name-format "/app/logs/app.log"
-                            :backup-name-format "app%Y%m%d.log"))) )))
+          (if (string-equal (current-environment)
+                            "development")
+           (list '(this-console
+                   :layout :plain
+                   :filter :warn))
+           (list '(this-console
+                   :layout :json
+                   :filter :warn)) )))
     (log4cl-extras/config:setup
      (list :level :info
            :appenders appenders))))
