@@ -23,14 +23,15 @@
 
 (defun start (&key (port 8080)
 		(interface "localhost"))
-  (app/logging::setup)
   (start-slynk-if-needed)
   (make-lparallel-kernel-if-needed)
   (reblocks/server:start :port port
 			 :interface interface
                          :apps 'disk-analyzer
 			 :server-type :woo)
-  (log:config :sane2 :warn))
+  (app/logging::setup)
+  (log:error "Server started")
+  )
 
 
 (defun cl-user::start-server ()

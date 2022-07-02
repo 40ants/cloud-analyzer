@@ -11,13 +11,19 @@
 
 
 (defun setup ()
+;  (unless (string-equal (current-environment)
+;			"development")
+;    (setf log4cl::*global-console*
+;	  (make-synonym-stream '*standard-output*)))
+
   (let ((appenders
           (if (string-equal (current-environment)
                             "development")
            (list '(this-console
                    :layout :plain
                    :filter :warn))
-           (list '(this-console
+           (list `(this-console
+		   :stream ,*standard-output*
                    :layout :json
                    :filter :warn)) )))
     (log4cl-extras/config:setup
