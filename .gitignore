@@ -2,3 +2,5 @@
 .qlot
 app
 logs/*.log
+*.fasl
+.local.lisp

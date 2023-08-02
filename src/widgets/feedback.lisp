@@ -45,20 +45,21 @@
       ((get-username)
        (with-html
          (:p "Я буду рад узнать о ваших идеях о том, как можно сделать этот сервис лучше.")
-         (with-html-form (:post #'process-submit)
-           (:p
+         (with-html-form (:post #'process-submit
+                          :class "flex flex-col gap-4")
+           (:div
             (:label :for "email"
                     "Если хотите чтобы я ответил, оставьте свой email:")
             (:input :name "email"
                     :type "email"
                     :placeholder "somebody@yandex.ru"))
-           (:p
+           (:div
             (:label :for "message"
                     "Идея, багрепорт или пожелание счастья:")
             (:textarea :name "message"))
-           (:p
+           (:div :class "flex justify-end"
             (:input :type "submit"
-                    :class "button"
+                    :class "try-button-2 group px-[38px] py-[15px] bg-red-500 hover:bg-red-700 rounded-lg drop-shadow-xl hover:drop-shadow-md border border-orange-800 justify-center items-center gap-2.5 inline-flex text-slate-100 text-[29.11px] font-bold hover:text-slate-200 cursor-pointer"
                     :name "submit-button"
                     :value "Отправить")))))
       (t

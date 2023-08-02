@@ -21,11 +21,18 @@
 	    (lparallel:make-kernel num-workers)))))
 
 
+(defun load-local-config ()
+  (let ((filename (asdf/system:system-relative-pathname :app ".local.lisp")))
+    (when (probe-file filename)
+      (load filename))))
+
+
 (defun start (&key (port 8080)
-		(interface "localhost"))
+		   (interface "localhost"))
   ;; Just to suppres debug logs to TTY from Reblocks.
   ;; I'll need to fix Reblocks to prohibit it from
   ;; configure logging if they are already configured.
+  (load-local-config)
   (app/logging::setup)
   (start-slynk-if-needed)
   (make-lparallel-kernel-if-needed)
@@ -34,8 +41,7 @@
                          :apps 'disk-analyzer
 			 :server-type :woo)
   (app/logging::setup)
-  (log:error "Server started")
-  )
+  (log:info "Server started"))
 
 
 (defun cl-user::start-server ()

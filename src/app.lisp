@@ -18,7 +18,10 @@
   (:import-from #:app/widgets/header
                 #:make-page-with-header)
   (:import-from #:app/widgets/feedback
-                #:make-feedback))
+                #:make-feedback)
+  (:import-from #:reblocks/page)
+  (:import-from #:app/widgets/policy
+                #:make-policy-page))
 (in-package #:app/app)
 
 
@@ -28,6 +31,8 @@
 
 (defroutes routes
     ("/login" (make-login-page))
+  ("/policy"  (make-page-with-header
+               (make-policy-page)))
   ("/analyzer"  (make-page-with-header
                  (make-analyzer)))
   ("/feedback" (make-page-with-header
@@ -38,9 +43,8 @@
         (make-landing-page))))
 
 
-(defmethod reblocks/session:init ((app disk-analyzer))  
+(defmethod reblocks/page:init-page ((app disk-analyzer) (url-path string) expire-at)
   (make-routes))
-
 
 
 (reblocks/hooks:on-application-hook-handle-http-request set-token (env)

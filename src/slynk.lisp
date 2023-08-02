@@ -7,7 +7,7 @@
   (:import-from #:slynk)
   (:import-from #:slynk-macrostep)
   (:import-from #:slynk-named-readtables)
-  (:import-from #:slynk-package-inferred)
+  ;; (:import-from #:slynk-package-inferred)
   
   (:export
    #:*connections*

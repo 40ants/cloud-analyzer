@@ -91,6 +91,10 @@
         (:script (:raw (refresh-code widget)))))))
 
 
+(defmethod reblocks/widget:get-css-classes ((widget progress-bar))
+  (call-next-method))
+
+
 (defmethod reblocks/dependencies:get-dependencies ((widget progress-bar))
   (list
    (reblocks-lass:make-dependency

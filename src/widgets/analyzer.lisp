@@ -193,6 +193,14 @@
          (reblocks/widget:render (progress widget)))))))
 
 
+(defmethod reblocks/widget:get-css-classes ((widget analyzer))
+  (list* "h-screen"
+         "flex"
+         "flex-col"
+         "justify-center"
+         (call-next-method)))
+
+
 ;; (defmethod reblocks/dependencies:get-dependencies ((widget analyzer))
 ;;   nil
 ;;   ;; (list
