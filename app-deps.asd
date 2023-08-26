@@ -51,8 +51,6 @@
   "dbi"
   "dexador"
   "dissect"
-  "docs-config"
-  "docs-config/config"
   "documentation-utils"
   "dynamic-classes"
   "f-underscore"
@@ -195,7 +193,6 @@
   "reblocks-lass"
   "reblocks-lass/core"
   "reblocks-navigation-widget"
-  "reblocks-navigation-widget/changelog"
   "reblocks-navigation-widget/core"
   "reblocks-parenscript"
   "reblocks-parenscript/reblocks-parenscript"
@@ -288,4 +285,5 @@
   "vom"
   "with-output-to-stream"
   "woo"
-  "xsubseq"))
+  "xsubseq"
+  "yason"))
