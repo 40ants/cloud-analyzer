@@ -2,7 +2,9 @@
   (:use #:cl)
   (:import-from #:bordeaux-threads)
   (:import-from #:reblocks/widget
-                #:defwidget))
+                #:defwidget)
+  (:import-from #:app/widgets/yandex-metrika
+                #:reach-goal))
 (in-package #:app/widgets/progress-bar)
 
 
@@ -23,7 +25,15 @@
                  :accessor refresh-code)
    (title :initform nil
           :initarg :title
-          :reader title)))
+          :reader title)
+
+   (intermediate-goals :initform
+                       (list (cons 1  "processed-01")
+                             (cons 25 "processed-25")
+                             (cons 50 "processed-50")
+                             (cons 75 "processed-75")
+                             (cons 90 "processed-90"))
+                       :accessor intermediate-goals)))
 
 
 (defun make-progress-bar (total-size &key
@@ -74,7 +84,17 @@
                         (format nil "~,2F"
                                 value)
                         (format nil "~,1F"
-                                value))))))
+                                value)))))
+         (next-goal (first
+                     (intermediate-goals widget))))
+
+    ;; Зафиксируем прогресс в метрике
+    (when (and next-goal
+               (> value (car next-goal)))
+      (reach-goal (cdr next-goal))
+      (setf (intermediate-goals widget)
+            (cdr (intermediate-goals widget))))
+    
     (reblocks/html:with-html
       (:div :class "progress-container"
             :title (title widget)

@@ -151,46 +151,52 @@
 
 
 (defmethod reblocks/widget:render ((widget analyzer))
-  (flet ((try-again (&rest rest)
-           (declare (ignore rest))
-           (reach-goal "disk-size-recalculation")
-           (setf (disk-space widget) nil
-                 (files widget) nil
-                 (processing-error widget) nil
-                 (progress widget) (make-progress-bar (get-total-usage :unit :raw)))
-           (start-processing widget)
-           (reblocks/widget:update widget)))
-    (render-counter)
-    
-    (reblocks/html:with-html
-      (cond
-        ((processing-error widget)
-         (reach-goal "error-shown")
-         (:div :class "callout alert"
-               (:p "При обработке данных произошла ошибка:")
-               (:p (format nil "\"~A\"" (processing-error widget))))
-         (:p (render-form-and-button
-              "Попробовать снова"
-              #'try-again
-              :method :post)))
-        ((files widget)
-         (reach-goal "diagram-shown")
-         (:table
-          (:tr :style "vertical-align: top;"
-               (:td :style "height: 600px; overflow: scroll; display: block;"
-                    (reblocks/widget:render (files widget)))
-               (:td (reblocks/widget:render (disk-space widget))))
-          (when (usage-progress widget)
+  (let ((button-class
+          "border border-indigo-500 bg-indigo-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-indigo-600 focus:outline-none focus:shadow-outline"))
+    (flet ((try-again (&rest rest)
+             (declare (ignore rest))
+             (reach-goal "disk-size-recalculation")
+             (setf (disk-space widget) nil
+                   (files widget) nil
+                   (processing-error widget) nil
+                   (progress widget) (make-progress-bar (get-total-usage :unit :raw)))
+             (start-processing widget)
+             (reblocks/widget:update widget)))
+      (render-counter)
+     
+      (reblocks/html:with-html
+        (cond
+          ((processing-error widget)
+           (reach-goal "error-shown")
+           (:div :class "mx-20 flex flex-col"
+                 (:div :class "callout alert"
+                       (:p "При обработке данных произошла ошибка:")
+                       (:p (format nil "\"~A\"" (processing-error widget))))
+                 (:div :class "controls flex align-center"
+                       (render-form-and-button 
+                        "Попробовать снова"
+                        #'try-again
+                        :method :post
+                        :button-class button-class))))
+          ((files widget)
+           (reach-goal "diagram-shown")
+           (:table
+            (:tr :style "vertical-align: top;"
+                 (:td :style "height: 600px; overflow: scroll; display: block;"
+                      (reblocks/widget:render (files widget)))
+                 (:td (reblocks/widget:render (disk-space widget))))
+            (when (usage-progress widget)
+              (:tr (:td)
+                   (:td "Заполненность диска:"
+                        (reblocks/widget:render (usage-progress widget)))))
             (:tr (:td)
-                 (:td "Заполненность диска:"
-                      (reblocks/widget:render (usage-progress widget)))))
-          (:tr (:td)
-               (:td (render-form-and-button
-                     "Обновить"
-                     #'try-again
-                     :method :post)))))
-        (t
-         (reblocks/widget:render (progress widget)))))))
+                 (:td (render-form-and-button
+                       "Обновить"
+                       #'try-again
+                       :method :post
+                       :button-class button-class)))))
+          (t
+           (reblocks/widget:render (progress widget))))))))
 
 
 (defmethod reblocks/widget:get-css-classes ((widget analyzer))

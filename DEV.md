@@ -13,3 +13,9 @@ Yandex Metrika Goals:
   ym(89257131,'reachGoal','error-shown')
 - Запущен пересчёт места
   ym(89257131,'reachGoal','disk-size-recalculation')
+- Достигнут определённый прогресс в обработке данных:
+  processed-01
+  processed-25
+  processed-50
+  processed-75
+  processed-90

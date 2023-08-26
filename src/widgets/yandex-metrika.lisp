@@ -43,3 +43,5 @@
             `(ps:chain (ym ,code "reachGoal" ,name)))))
     (log:info "Goal reached" name)
     (reblocks/response:send-script js-code)))
+
+
