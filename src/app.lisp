@@ -21,7 +21,9 @@
                 #:make-feedback)
   (:import-from #:reblocks/page)
   (:import-from #:app/widgets/policy
-                #:make-policy-page))
+                #:make-policy-page)
+  (:import-from #:app/widgets/payment
+                #:make-payment-page))
 (in-package #:app/app)
 
 
@@ -33,6 +35,8 @@
     ("/login" (make-login-page))
   ("/policy"  (make-page-with-header
                (make-policy-page)))
+  ("/payment"  (make-page-with-header
+                (make-payment-page)))
   ("/analyzer"  (make-page-with-header
                  (make-analyzer)))
   ("/feedback" (make-page-with-header
