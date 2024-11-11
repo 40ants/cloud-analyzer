@@ -2,6 +2,7 @@
   (:use #:cl)
   (:import-from #:reblocks/app
                 #:defapp)
+  (:import-from #:reblocks/hooks)
   (:import-from #:app/widgets/login
                 #:get-token
                 #:make-login-page)

@@ -4,3 +4,6 @@ app
 logs/*.log
 *.fasl
 .local.lisp
+.local-config.lisp
+roswell/cloud-analyzer
+roswell/cloud-analyzer-prod

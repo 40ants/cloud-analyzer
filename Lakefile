@@ -1,0 +1,57 @@
+#|-*- mode:lisp -*-|#
+
+(push "~/projects/40ants-lake/" asdf:*central-registry*)
+(push "~/projects/cl-mustache/" asdf:*central-registry*)
+
+;; (ql:quickload :lparallel)
+(ql:quickload :40ants-lake
+              :silent t)
+
+(defpackage :lake.user
+  (:use :cl :lake)
+  (:import-from #:40ants-lake/utils
+                #:alias)
+  (:import-from #:40ants-lake/app
+                #:defapps
+                #:app)
+  (:import-from #:40ants-lake/component/webservice
+                #:webservice
+                #:proxy)
+  (:import-from #:40ants-lake/component/daemon
+                #:daemon)
+  (:import-from #:40ants-lake/env-val
+                #:env-val)
+  (:shadowing-import-from :lake
+   :directory))
+(in-package :lake.user)
+
+
+(when (probe-file ".local-config.lisp")
+  (load ".local-config.lisp"))
+
+
+(let ((backend-port (env-val :prod 10117
+                             :dev 10118))
+      (slynk-port (env-val :prod 9420
+                           :dev 9421))
+      (environment (env-val :prod "production"
+                            :dev "development")))
+  (defapps
+    (app "cloud-analyzer"
+         :components (list (webservice (env-val :prod "cloud-analyzer.ru"
+                                                :dev "dev.cloud-analyzer.ru")
+                                       :routes (proxy "/"
+                                                      backend-port))
+                           (daemon :environment `(("APP_PORT" . ,backend-port)
+                                                  ("APP_INTERFACE" . "localhost")
+                                                  ("ENVIRONMENT" . ,environment)
+                                                  ("OAUTH_CLIENT_ID" . ,(env-val :prod (uiop:getenv "PROD_OAUTH_CLIENT_ID")))
+                                                  ("OAUTH_CLIENT_SECRET" . ,(env-val :prod (uiop:getenv "PROD_OAUTH_CLIENT_SECRET")))
+                                                  ("YANDEX_METRIKA" . ,(env-val :prod "89257293"))
+                                                  ("SLYNK_PORT" . ,slynk-port)
+                                                  ("DB_HOST" . ,(uiop:getenv "DB_HOST"))
+                                                  ("DB_PORT" . ,(uiop:getenv "DB_PORT"))
+                                                  ("DB_NAME" . ,(uiop:getenv "DB_NAME"))
+                                                  ("DB_USER" . ,(uiop:getenv "DB_USER"))
+                                                  ("DB_PASS" . ,(uiop:getenv "DB_PASS"))
+                                                  ("GITHUB_TOKEN" . ,(uiop:getenv "GITHUB_TOKEN"))))))))

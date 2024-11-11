@@ -49,7 +49,11 @@
   :class :package-inferred-system
   :pathname #P"app:src;"
   :depends-on ("app/widgets/analyzer"
-	       "app/server"))
+	       "app/server"
+               ;; We need to ensure that reblocks
+               ;; if fully loaded because otherwise some important
+               ;; parts of it such as jquery backend might be missing.
+               "reblocks"))
 
 
 (asdf:register-system-packages "colored" '(#:org.shirakumo.alloy.colored))
